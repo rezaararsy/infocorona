@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import AwesomeButton from 'react-native-really-awesome-button/src/themes/red';
@@ -43,6 +43,7 @@ export default class LinkScreen extends React.Component {
   async componentDidMount() {
     this.getDataTentang1();
     this.getDataTentang('ID');
+    this.arrayholder = [];
 
   }
   getDataTentang1 = async () => {
@@ -72,6 +73,7 @@ export default class LinkScreen extends React.Component {
             this.state.list_kode1.push([i, this.state.list_kode[i]]);
           console.log('ini');
           console.log(JSON.stringify(this.state.list_kode1));
+          this.arrayholder = this.state.list_kode1;
         } else {
           // console.log(responseJson.Data[0]);
           this.setState({
@@ -139,8 +141,28 @@ export default class LinkScreen extends React.Component {
       <View style={styles.modal__header}>
         <Text style={styles.modal__headerText}>Choose Country</Text>
       </View>
+      <View style={{ marginTop: 5, padding: 10 }}>
+        <TextInput style={{ height: 40, backgroundColor: 'white', padding: 8, marginTop: 5 }}
+          placeholder="Input Country"
+
+          onChangeText={text => this.searchFilterFunction(text)}
+
+        />
+
+      </View>
     </View>
   );
+  searchFilterFunction = text => {
+    const newData = this.arrayholder.filter(item => {
+      const itemData = `${item[0].toUpperCase()}`;
+
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+
+    this.setState({ list_kode1: newData });
+  };
   renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
@@ -335,7 +357,7 @@ export default class LinkScreen extends React.Component {
         <View style={styles.container}>
           <Modalize
             ref={this.modal}
-            snapPoint={350}
+            snapPoint={550}
             HeaderComponent={this.renderHeader}
             flatListProps={{
               data: this.state.list_kode1,
@@ -443,7 +465,7 @@ export default class LinkScreen extends React.Component {
                 <View style={styles.BerandaCardView}>
                   <Icon
                     reverse
-                    name='inbox'
+                    name='block'
                     type='material'
                     color='#fa1e44'
                     size={15}

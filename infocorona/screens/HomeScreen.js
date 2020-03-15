@@ -329,7 +329,7 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.BerandaCardView}>
                   <Icon
                     reverse
-                    name='inbox'
+                    name='block'
                     type='material'
                     color='#fa1e44'
                     size={15}
