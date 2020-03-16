@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
+import Webnya from '../screens/Webnya';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -40,6 +41,14 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-map" />,
         }}
       />
+      <BottomTab.Screen
+        name="Webnya"
+        component={Webnya}
+        options={{
+          title: 'WHO',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-bookmarks" />,
+        }}
+      />
     </BottomTab.Navigator>
   );
 }
@@ -52,5 +61,7 @@ function getHeaderTitle(route) {
       return 'Global Corona Data';
     case 'Links':
       return 'Corona Data From Several Countries';
+    case 'Webnya':
+      return 'World Health Organization';
   }
 }
