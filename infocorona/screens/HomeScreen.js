@@ -21,6 +21,8 @@ export default class HomeScreen extends React.Component {
       confirmed: '',
       recovered: '',
       deaths: '',
+      recoveredP: '',
+      deathsP: '',
       updated: '',
       sourcenya: '',
     };
@@ -52,6 +54,8 @@ export default class HomeScreen extends React.Component {
             deaths: responseJson.deaths.value,
             updated: responseJson.lastUpdate,
             sourcenya: responseJson.source,
+            recoveredP: parseFloat(responseJson.recovered.value / responseJson.confirmed.value * 100).toFixed(2),
+            deathsP: parseFloat(responseJson.deaths.value / responseJson.confirmed.value * 100).toFixed(2),
             isLoadingProfil: false
           });
 
@@ -314,7 +318,7 @@ export default class HomeScreen extends React.Component {
                 {this.state.recovered != 0 && (
                   <View style={styles.CircleShapeView}>
                     <Text style={styles.CircleShapeTextView}>
-                      {this.state.recovered}
+                      {this.state.recovered} ({this.state.recoveredP}%)
                     </Text>
                   </View>
                 )}
@@ -346,7 +350,7 @@ export default class HomeScreen extends React.Component {
                 {this.state.deaths != 0 && (
                   <View style={styles.CircleShapeView}>
                     <Text style={styles.CircleShapeTextView}>
-                      {this.state.deaths}
+                      {this.state.deaths} ({this.state.deathsP}%)
                     </Text>
                   </View>
                 )}
@@ -473,7 +477,7 @@ const styles = StyleSheet.create({
 
   CircleShapeTextView: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 10,
     textAlign: "center",
     fontWeight: 'bold',
   },

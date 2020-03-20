@@ -31,6 +31,8 @@ export default class LinkScreen extends React.Component {
       isLoading: false,
       confirmed: '',
       recovered: '',
+      recoveredP: '',
+      deathsP: '',
       deaths: '',
       updated: '',
       list_kode: [],
@@ -99,7 +101,7 @@ export default class LinkScreen extends React.Component {
 
   getDataTentang = async (kode) => {
     this.setState({ isLoadingProfil: true });
-
+    //kode = this.state.kode;
     let url = 'https://covid19.mathdro.id/api/countries/' + kode;
     console.log(url);
     await fetch(url, {
@@ -118,9 +120,13 @@ export default class LinkScreen extends React.Component {
             recovered: responseJson.recovered.value,
             deaths: responseJson.deaths.value,
             updated: responseJson.lastUpdate,
+            recoveredP: parseFloat(responseJson.recovered.value / responseJson.confirmed.value * 100).toFixed(2),
+            deathsP: parseFloat(responseJson.deaths.value / responseJson.confirmed.value * 100).toFixed(2),
             isLoadingProfil: false
-          });
 
+          });
+          // this.state.recoveredP = this.state.recovered / this.state.confirmed * 100;
+          // this.state.deathsP = this.state.deathsP / this.state.confirmed * 100;
         } else {
           // console.log(responseJson.Data[0]);
           this.setState({
@@ -454,7 +460,7 @@ export default class LinkScreen extends React.Component {
 
                 <View style={styles.CircleShapeView}>
                   <Text style={styles.CircleShapeTextView}>
-                    {this.state.recovered}
+                    {this.state.recovered} ({this.state.recoveredP}%)
                   </Text>
                 </View>
 
@@ -482,7 +488,7 @@ export default class LinkScreen extends React.Component {
 
                 <View style={styles.CircleShapeView}>
                   <Text style={styles.CircleShapeTextView}>
-                    {this.state.deaths}
+                    {this.state.deaths} ({this.state.deathsP}%)
                   </Text>
                 </View>
 
@@ -536,7 +542,7 @@ export default class LinkScreen extends React.Component {
                   height={45}
                   width={150}
                   onPress={() => {
-                    this.getDataTentang();
+                    this.getDataTentang(this.state.negara);
                   }}>
 
                   Refresh Data
