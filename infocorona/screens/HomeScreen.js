@@ -477,17 +477,17 @@ const styles = StyleSheet.create({
 
   CircleShapeTextView: {
     color: 'white',
-    fontSize: 10,
+    fontSize: 12,
     textAlign: "center",
     fontWeight: 'bold',
   },
 
   CircleShapeView: {
-    padding: 5,
+    padding: 10,
     marginTop: 10,
     marginRight: 5,
-    width: 100,
-    height: 30,
+    //width: 100,
+    //height: 30,
     borderRadius: 50 / 2,
     backgroundColor: '#ff5959'
   },

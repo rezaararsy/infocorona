@@ -71,11 +71,11 @@ export default class LinkScreen extends React.Component {
           //var result = [];
 
 
-          for (var i in this.state.list_kode)
-            this.state.list_kode1.push([i, this.state.list_kode[i]]);
-          console.log('ini');
-          console.log(JSON.stringify(this.state.list_kode1));
-          this.arrayholder = this.state.list_kode1;
+          // for (var i in this.state.list_kode)
+          //   this.state.list_kode1.push([i, this.state.list_kode[i]]);
+          // console.log('ini');
+          // console.log(JSON.stringify(this.state.list_kode1));
+          this.arrayholder = this.state.list_kode;
         } else {
           // console.log(responseJson.Data[0]);
           this.setState({
@@ -160,7 +160,7 @@ export default class LinkScreen extends React.Component {
   );
   searchFilterFunction = text => {
     const newData = this.arrayholder.filter(item => {
-      const itemData = `${item[0].toUpperCase()}`;
+      const itemData = `${item.name.toUpperCase()}`;
 
       const textData = text.toUpperCase();
 
@@ -172,11 +172,11 @@ export default class LinkScreen extends React.Component {
   renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        this.ganti(item[0], item[1])
+        this.ganti(item.name, item.iso2)
       }}>
       <View style={styles.item}>
 
-        <Text style={styles.item__name}>{item[0]}</Text>
+        <Text style={styles.item__name}>{item.name}</Text>
 
       </View>
     </TouchableOpacity>
@@ -366,7 +366,7 @@ export default class LinkScreen extends React.Component {
             snapPoint={550}
             HeaderComponent={this.renderHeader}
             flatListProps={{
-              data: this.state.list_kode1,
+              data: this.state.list_kode,
               renderItem: this.renderItem,
               keyExtractor: item => item[0],
               showsVerticalScrollIndicator: false,
@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
 
   CircleShapeTextView: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 12,
     textAlign: "center",
     fontWeight: 'bold',
   },
@@ -603,11 +603,11 @@ const styles = StyleSheet.create({
     fontWeight: '200',
   },
   CircleShapeView: {
-    padding: 5,
+    padding: 10,
     marginTop: 10,
     marginRight: 5,
-    width: 100,
-    height: 30,
+    //width: 100,
+    //height: 30,
     borderRadius: 50 / 2,
     backgroundColor: '#ff5959'
   },
