@@ -167,7 +167,7 @@ export default class LinkScreen extends React.Component {
       return itemData.indexOf(textData) > -1;
     });
 
-    this.setState({ list_kode1: newData });
+    this.setState({ list_kode: newData });
   };
   renderItem = ({ item }) => (
     <TouchableOpacity
