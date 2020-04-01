@@ -4,6 +4,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import AwesomeButton from 'react-native-really-awesome-button/src/themes/red';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync
+} from 'expo-ads-admob';
 
 import { MonoText } from '../components/StyledText';
 import {
@@ -29,8 +36,28 @@ export default class HomeScreen extends React.Component {
   }
 
   async componentDidMount() {
+    //this._openInterstitial();
+    // AdMobBanner.setAdUnitID('ca-app-pub-9484082567114648/7502388526') //test id
+    // await setTestDeviceIDAsync('EMULATOR');
+
+    //this.initAds().catch((error) => console.log(error));
     this.getDataTentang();
+
   }
+
+  initAds = async () => {
+
+  }
+
+  // _openInterstitial = async () => {
+  //   try {
+  //     await AdMobInterstitial.requestAdAsync()
+  //     await AdMobInterstitial.showAdAsync()
+  //   } catch (error) {
+  //     console.error(error)
+  //   } finally {
+  //   }
+  // }
 
   getDataTentang = async () => {
     this.setState({ isLoadingProfil: true });
@@ -257,6 +284,7 @@ export default class HomeScreen extends React.Component {
         <View style={styles.container}>
           <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             <View style={styles.welcomeContainer}>
+
               <View style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -418,8 +446,16 @@ export default class HomeScreen extends React.Component {
                                 </AwesomeButton>
               </View>
 
+
             </View>
+            <AdMobBanner
+              bannerSize="fullBanner"
+              adUnitID="ca-app-pub-9484082567114648/7502388526" // Test ID, Replace with your-admob-unit-id
+              testDeviceID="EMULATOR"
+              servePersonalizedAds // true or false
+              onDidFailToReceiveAdWithError={this.bannerError} />
           </ScrollView>
+
         </View>
     );
   }

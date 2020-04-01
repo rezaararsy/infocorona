@@ -5,6 +5,13 @@ import * as WebBrowser from 'expo-web-browser';
 import AwesomeButton from 'react-native-really-awesome-button/src/themes/red';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 import { Modalize } from 'react-native-modalize';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync
+} from 'expo-ads-admob';
 
 import { MonoText } from '../components/StyledText';
 import {
@@ -43,10 +50,15 @@ export default class LinkScreen extends React.Component {
   }
 
   async componentDidMount() {
+    //this.initAds().catch((error) => console.log(error));
     this.getDataTentang1();
     this.getDataTentang('ID');
     this.arrayholder = [];
 
+  }
+  initAds = async () => {
+    AdMobBanner.setAdUnitID('ca-app-pub-9484082567114648/7502388526') //test id
+    await setTestDeviceIDAsync('EMULATOR');
   }
   getDataTentang1 = async () => {
     this.setState({ isLoadingProfil: true });
@@ -549,8 +561,16 @@ export default class LinkScreen extends React.Component {
                                 </AwesomeButton>
               </View>
 
+
             </View>
+            <AdMobBanner
+              bannerSize="fullBanner"
+              adUnitID="ca-app-pub-9484082567114648/7502388526" // Test ID, Replace with your-admob-unit-id
+              testDeviceID="EMULATOR"
+              servePersonalizedAds // true or false
+              onDidFailToReceiveAdWithError={this.bannerError} />
           </ScrollView>
+
         </View>
     );
   }

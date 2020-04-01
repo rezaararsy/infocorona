@@ -3,7 +3,6 @@
     "name": "Info Corona",
     "slug": "infocorona",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -29,7 +28,10 @@
     },
     "android": {
       "package": "com.infocorona.infocorona",
-      "versionCode": 1
+      "versionCode": 1,
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-9484082567114648~6572450230"
+      }
     }
   }
 }
