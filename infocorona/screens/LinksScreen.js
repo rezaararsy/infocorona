@@ -18,6 +18,49 @@ import {
   Card,
   Icon
 } from "react-native-elements";
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from "react-native-chart-kit";
+import { Dimensions } from "react-native";
+const screenWidth = Dimensions.get("window").width;
+
+// const datae = [
+//   {
+//     name: "Recovered",
+//     population: this.state.deaths,
+//     color: "rgba(131, 167, 234, 1)",
+//     legendFontColor: "#7F7F7F",
+//     legendFontSize: 15
+//   },
+//   {
+//     name: "Deaths",
+//     population: 20,
+//     color: "white",
+//     legendFontColor: "#7F7F7F",
+//     legendFontSize: 15
+//   },
+//   {
+//     name: "Treatment",
+//     population: 30,
+//     color: "red",
+//     legendFontColor: "#7F7F7F",
+//     legendFontSize: 15
+//   }
+// ];
+const chartConfig = {
+  backgroundGradientFrom: "#00b4eb",
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientTo: "#00b4eb",
+  backgroundGradientToOpacity: 0.5,
+  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+  strokeWidth: 3, // optional, default 3
+  barPercentage: 0.5
+};
 
 export default class LinkScreen extends React.Component {
   modal = React.createRef();
@@ -45,7 +88,10 @@ export default class LinkScreen extends React.Component {
       list_kode: [],
       list_kode1: [],
       negara: 'ID',
-      negara1: 'Indonesia'
+      negara1: 'Indonesia',
+      datae: [],
+      treatment: '',
+      treatmentP: '',
     };
   }
 
@@ -126,7 +172,9 @@ export default class LinkScreen extends React.Component {
       .then((responseJson) => {
         console.log(responseJson);
         if (responseJson != null) {
-
+          var death = responseJson.deaths.value;
+          var recovered = responseJson.recovered.value;
+          var treatment2 = responseJson.confirmed.value - death - recovered;
           this.setState({
             confirmed: responseJson.confirmed.value,
             recovered: responseJson.recovered.value,
@@ -134,7 +182,32 @@ export default class LinkScreen extends React.Component {
             updated: responseJson.lastUpdate,
             recoveredP: parseFloat(responseJson.recovered.value / responseJson.confirmed.value * 100).toFixed(2),
             deathsP: parseFloat(responseJson.deaths.value / responseJson.confirmed.value * 100).toFixed(2),
-            isLoadingProfil: false
+            treatment: treatment2,
+            treatmentP: parseFloat(treatment2 / responseJson.confirmed.value * 100).toFixed(2),
+            isLoadingProfil: false,
+            datae: [
+              {
+                name: "Recovered",
+                population: recovered,
+                color: "#A7ED4D",
+                legendFontColor: "#7F7F7F",
+                legendFontSize: 15
+              },
+              {
+                name: "Deaths",
+                population: death,
+                color: "#fa1e44",
+                legendFontColor: "#7F7F7F",
+                legendFontSize: 15
+              },
+              {
+                name: "Treatment",
+                population: treatment2,
+                color: "#00b4eb",
+                legendFontColor: "#7F7F7F",
+                legendFontSize: 15
+              }
+            ]
 
           });
           // this.state.recoveredP = this.state.recovered / this.state.confirmed * 100;
@@ -451,13 +524,57 @@ export default class LinkScreen extends React.Component {
 
 
               </TouchableOpacity>
+              <View style={{ backgroundGradientFrom: 'white', borderRadius: 20 }}>
+                <PieChart
+                  data={this.state.datae}
+                  width={screenWidth}
+                  height={220}
+                  chartConfig={chartConfig}
+                  accessor="population"
+                  backgroundColor="transparent"
+                  paddingLeft="0"
+
+                />
+              </View>
+
+              <TouchableOpacity style={styles.heading1} >
+                <View style={styles.BerandaCardView}>
+                  <Icon
+                    reverse
+                    name='home'
+                    type='material'
+                    color='#00b4eb'
+                    size={15}
+                  />
+                </View>
+                <View style={{
+                  padding: 10,
+                  paddingTop: 10
+                }}>
+                  <Text style={styles.heading}>
+                    Treatment
+                            </Text>
+                </View>
+                {this.state.treatment != 0 && (
+                  <View style={styles.CircleShapeView}>
+                    <Text style={styles.CircleShapeTextView}>
+                      {this.state.treatment}
+                    </Text>
+                  </View>
+                )}
+                {this.state.recovered == 0 && (
+                  <View style={styles.CircleShapeView2}>
+                  </View>
+                )}
+
+              </TouchableOpacity>
               <TouchableOpacity style={styles.heading1} >
                 <View style={styles.BerandaCardView}>
                   <Icon
                     reverse
                     name='inbox'
                     type='material'
-                    color='#00b4eb'
+                    color='#A7ED4D'
                     size={15}
                   />
                 </View>
@@ -472,7 +589,7 @@ export default class LinkScreen extends React.Component {
 
                 <View style={styles.CircleShapeView}>
                   <Text style={styles.CircleShapeTextView}>
-                    {this.state.recovered} ({this.state.recoveredP}%)
+                    {this.state.recovered}
                   </Text>
                 </View>
 
@@ -500,7 +617,7 @@ export default class LinkScreen extends React.Component {
 
                 <View style={styles.CircleShapeView}>
                   <Text style={styles.CircleShapeTextView}>
-                    {this.state.deaths} ({this.state.deathsP}%)
+                    {this.state.deaths}
                   </Text>
                 </View>
 
